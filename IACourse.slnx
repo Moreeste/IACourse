@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="NGramas/NGramas.csproj" Id="bf5bed5f-c35f-40fb-9eee-19702a08a4cb" />
   <Project Path="TriGramas/TriGramas.csproj" Id="04b137de-0392-41de-88bd-8537903b05b1" />
+  <Project Path="TriGramasRandomness/TriGramasRandomness.csproj" Id="9d11ade1-b468-47b5-98cd-69af7b243296" />
 </Solution>

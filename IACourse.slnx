@@ -5,4 +5,7 @@
     <Project Path="Fundamentals/TriGramasRandomness/TriGramasRandomness.csproj" Id="9d11ade1-b468-47b5-98cd-69af7b243296" />
     <Project Path="Fundamentals/TriGramasTextGenerator/TriGramasTextGenerator.csproj" Id="74546d8e-7cc8-41d5-ae67-d82e7944eafc" />
   </Folder>
+  <Folder Name="/Llm/">
+    <Project Path="Llm/NeuralNetwork/NeuralNetwork.csproj" Id="350a509e-712b-4f0b-8d4f-bd0c1f3712dc" />
+  </Folder>
 </Solution>

@@ -10,20 +10,27 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSend.disabled = true;
         divResponse.textContent = 'Pensando...';
 
-        const res = await fetch('http://localhost:11434/api/generate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                model: 'qwen3.5:2b',
-                prompt: text,
-                stream: false
+        try{
+            const res = await fetch('http://localhost:11434/api/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    model: 'qwen3.5:2b',
+                    prompt: text,
+                    stream: false
+                })
             })
-        })
 
-        const data = await res.json();
+            if(!res.ok) throw new Error('Error HTTP');
 
-        divResponse.textContent = data.response ?? '(Sin respuesta)';
-        btnSend.disabled = false;
-        txtPrompt.value = '';
+            const data = await res.json();
+            divResponse.textContent = data.response ?? '(Sin respuesta)';
+            txtPrompt.value = '';
+        } catch (error) {
+            console.error(error);
+            divResponse.textContent = 'Error al conectar con Ollama.';
+        } finally {
+            btnSend.disabled = false;
+        }        
     })
 })

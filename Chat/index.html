@@ -3,12 +3,19 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Page Title</title>
+    <title>Chat con Ollama</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <script src='script.js'></script>
 </head>
 <body>
-    <h1>Hello World!</h1>
+    <div class="container">
+        <h1>Chat con Ollama</h1>
+        <textarea id="prompt" rows="5" placeholder="Escribe tu mensaje aquí..."></textarea>
+        <div class="right">
+            <button id="btnSend">Enviar</button>
+        </div>
+        <div id="response"></div>
+    </div>
 </body>
 </html>

@@ -5,6 +5,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const messages = [];
 
+    function showChat(){
+        divChat.innerHTML = '';
+        messages.forEach(({ role, content}) => {
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.classList.add('bubble', role === 'user' ? 'bubble-user' : 'bubble-assistant');
+            bubbleDiv.textContent = content;
+            divChat.appendChild(bubbleDiv);
+        });
+
+        divChat.scrollTop = divChat.scrollHeight;
+    }
+
     btnSend.addEventListener('click', async () => {
         const text = txtPrompt.value.trim();
         if(!text) return;
@@ -15,7 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         txtPrompt.value = '';
+        showChat();
         btnSend.disabled = true;
+
+        const thinking = document.createElement('div');
+        thinking.classList.add('bubble', 'bubble-thinking');
+        thinking.textContent = 'Pensando...';
+        divChat.appendChild(thinking);
+        divChat.scrollTop = divChat.scrollHeight;
 
         try{
             const res = await fetch('http://localhost:11434/api/chat', {
@@ -44,6 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 content: 'Error al conectar con Ollama.' 
             });
         } finally {
+            thinking.remove();
+            showChat();
             btnSend.disabled = false;
         }        
     })

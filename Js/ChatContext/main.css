@@ -32,3 +32,33 @@ textarea{
 .right{
     text-align: right;
 }
+
+.bubble{
+    max-width: 75%;
+    padding: 0.6rem 0.9rem;
+    border-radius: 12px;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.bubble-user{
+    align-self: flex-end;
+    background-color: #0078d4;
+    color: #fff;
+    border-bottom-right-radius: 3px;
+}
+
+.bubble-assistant{
+    align-self: flex-start;
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-bottom-left-radius: 3px;
+}
+
+.bubble-thinking{
+    align-self: flex-start;
+    background-color: #1e1e1e;
+    color: #888;
+    font-style: italic;
+    border-bottom-left-radius: 3px;
+}

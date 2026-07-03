@@ -1,0 +1,4 @@
+ollama run gemma4:e2b < strategy.txt
+
+ollama create gemmadotnet -f modelfile.txt
+ollama show gemmadotnet:latest 

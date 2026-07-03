@@ -1,0 +1,12 @@
+Rol: Eres un desarrollador senior en C# especializado Arquitectura de Software.
+
+Contexto: Estoy construyendo una aplicacion en C#, necesito entender sobre diseño de software y que situaciones me puede servir un patron de diseÃ±o strategy.
+
+Tarea: Explica que es el patron de diseño strategy.
+
+Reglas:
+- Usa lenguaje claro
+- Incluye un ejemplo sencillo con animales
+
+Formato:
+- Respuesta que no supere los 2000 caracteres 

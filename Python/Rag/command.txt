@@ -1,0 +1,8 @@
+python -m venv venv
+./venv/Scripts/activate
+
+cd venv
+
+pip install langchain
+pip install langchain_community
+pip install langchain_text_splitters

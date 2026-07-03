@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    model: 'qwen3.5:2b',
+                    model: 'gemma4:e2b',
                     messages: messages,
                     stream: false
                 })

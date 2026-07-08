@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administrador de tareas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <h1>Administrador de tareas</h1>
+      <p>Agrega tareas, márcalas como terminadas y se guardarán en tu navegador.</p>
+    </header>
+
+    <form id="task-form" class="task-form">
+      <input
+        id="task-input"
+        type="text"
+        placeholder="Agregar nueva tarea..."
+        autocomplete="off"
+        required
+      />
+      <button type="submit">Agregar</button>
+    </form>
+
+    <div class="task-controls">
+      <button id="clear-completed" type="button">Borrar completadas</button>
+    </div>
+
+    <ul id="task-list" class="task-list" aria-live="polite"></ul>
+
+    <p class="footer">Las tareas se guardan automáticamente en localStorage.</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Administrador de Tareas</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <h1>Administrador de Tareas</h1>
+    <section class="task-form">
+      <label for="taskInput">Nueva tarea</label>
+      <div class="input-row">
+        <input id="taskInput" type="text" placeholder="Escribe una tarea..." />
+        <button id="addTaskButton">Agregar</button>
+      </div>
+    </section>
+    <section class="task-status">
+      <span id="taskCount">0 tareas</span>
+    </section>
+    <ul id="taskList" class="task-list" aria-live="polite"></ul>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

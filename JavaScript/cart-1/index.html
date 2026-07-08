@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrito de Compras</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero">
+      <h1>Carrito de Compras</h1>
+      <p>Agrega productos, revisa el total, elimina artículos y guarda tu carrito.</p>
+    </header>
+
+    <section class="catalog">
+      <h2>Productos disponibles</h2>
+      <div class="products" id="productList"></div>
+    </section>
+
+    <section class="cart-panel">
+      <h2>Tu carrito</h2>
+      <div class="cart" id="cartItems"></div>
+      <div class="cart-total">
+        <span>Total:</span>
+        <strong id="cartTotal">$0.00</strong>
+      </div>
+      <button id="clearCart" class="button button-secondary">Vaciar carrito</button>
+    </section>
+
+    <section class="add-product">
+      <h2>Agregar producto personalizado</h2>
+      <form id="addProductForm">
+        <div class="form-group">
+          <label for="productName">Nombre</label>
+          <input type="text" id="productName" placeholder="Ej. Zapatos" required />
+        </div>
+        <div class="form-group">
+          <label for="productPrice">Precio</label>
+          <input type="number" id="productPrice" placeholder="Ej. 25.50" step="0.01" min="0.01" required />
+        </div>
+        <div class="form-group">
+          <label for="productQuantity">Cantidad</label>
+          <input type="number" id="productQuantity" value="1" min="1" required />
+        </div>
+        <button type="submit" class="button">Agregar al carrito</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

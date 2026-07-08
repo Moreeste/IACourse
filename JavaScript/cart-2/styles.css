@@ -1,0 +1,252 @@
+:root {
+  --bg: #f4f5f9;
+  --card: #ffffff;
+  --text: #1c2537;
+  --muted: #6e7a92;
+  --primary: #3f77f0;
+  --primary-dark: #345fc4;
+  --danger: #f25c5c;
+  --border: #d8dee7;
+  --shadow: 0 14px 30px rgba(32, 46, 78, 0.08);
+  --radius: 18px;
+  --space: 1rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.container {
+  width: min(1140px, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.site-header {
+  padding: 2rem 0 1rem;
+}
+
+.header-content h1 {
+  margin: 0;
+  letter-spacing: -0.03em;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 2.1fr 1fr;
+  gap: 1.5rem;
+  margin: 2rem 0 3rem;
+}
+
+.products-panel,
+.cart-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+.products-panel h2,
+.cart-panel h2 {
+  margin-top: 0;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #fff;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(32, 46, 78, 0.12);
+}
+
+.card__image {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.card__content {
+  padding: 1rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.card__title {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.card__price {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.badge {
+  display: inline-flex;
+  min-width: 2.2rem;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.95rem;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.85rem 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.button.secondary {
+  background: #eef2ff;
+  color: var(--text);
+}
+
+.button.secondary:hover {
+  background: #dde4ff;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cart-items {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: #fafbff;
+}
+
+.cart-item__image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+.cart-item__details {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.cart-item__name {
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.cart-item__info {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.quantity-control {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.quantity-control button {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.quantity-control span {
+  min-width: 1.6rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.cart-summary {
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-row {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 900px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-item {
+    grid-template-columns: 1fr;
+  }
+}

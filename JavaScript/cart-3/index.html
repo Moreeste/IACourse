@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carrito de Compras</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-2: #21262d;
+      --text: #c9d1d9;
+      --text-muted: #8b98a6;
+      --accent: #58a6ff;
+      --accent-soft: rgba(88, 166, 255, 0.16);
+      --success: #3fb950;
+      --danger: #f85149;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, #090b10 0%, #11161f 100%);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .container {
+      width: min(1200px, 100%);
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
+      gap: 24px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(12px);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    header h1 {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      line-height: 1.05;
+    }
+
+    header p {
+      color: var(--text-muted);
+      max-width: 40ch;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 0.75rem 1rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .products {
+      display: grid;
+      gap: 18px;
+    }
+
+    .product-card {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 18px;
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(88, 166, 255, 0.3);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 20px;
+      filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.2));
+    }
+
+    .product-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product-info h2 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .product-info span {
+      display: inline-flex;
+      align-items: center;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .product-info p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .product-info button {
+      align-self: flex-start;
+      background: var(--accent);
+      border: none;
+      color: #fff;
+      padding: 0.95rem 1.2rem;
+      border-radius: 16px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .search-box {
+      margin-bottom: 22px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .search-box input:focus {
+      border-color: rgba(88, 166, 255, 0.5);
+      box-shadow: 0 0 0 4px rgba(88, 166, 255, 0.14);
+    }
+
+    .pagination {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .page-button {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      padding: 0.9rem 1rem;
+      border-radius: 14px;
+      cursor: pointer;
+      min-width: 46px;
+      font-weight: 600;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .page-button:hover:not(:disabled) {
+      background: rgba(88, 166, 255, 0.16);
+      border-color: rgba(88, 166, 255, 0.4);
+    }
+
+    .page-button.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .page-button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .product-info button:hover {
+      background: #419fff;
+      transform: translateY(-1px);
+    }
+
+    .cart-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .cart-title h2 {
+      font-size: 1.3rem;
+    }
+
+    .cart-summary {
+      background: var(--surface-2);
+      border-radius: 22px;
+      padding: 20px;
+      margin-bottom: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .cart-summary div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      font-size: 0.98rem;
+    }
+
+    .cart-summary div:last-child {
+      margin-bottom: 0;
+    }
+
+    .total-label {
+      color: var(--text-muted);
+    }
+
+    .total-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .cart-items {
+      display: grid;
+      gap: 14px;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 14px;
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .cart-item-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .cart-item-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cart-item-detail {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .cart-item-detail strong {
+      font-size: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cart-item-detail span {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .cart-item-actions {
+      display: grid;
+      gap: 8px;
+      text-align: right;
+      min-width: 100px;
+    }
+
+    .cart-item-actions button {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .empty-state {
+      padding: 32px 20px;
+      color: var(--text-muted);
+      text-align: center;
+      border-radius: 22px;
+      background: var(--surface-2);
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      body {
+        padding: 16px;
+      }
+
+      .panel {
+        padding: 20px;
+      }
+
+      .product-card {
+        grid-template-columns: 1fr;
+      }
+
+      .product-card img {
+        min-height: 220px;
+      }
+
+      .cart-item {
+        grid-template-columns: 1fr;
+        text-align: left;
+      }
+
+      .cart-item-actions {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="panel">
+      <header>
+        <div>
+          <h1>Mercado Moderno</h1>
+          <p>Explora los productos y añade tus favoritos al carrito. El total se actualiza automáticamente mientras compras.</p>
+        </div>
+        <span class="badge">Envío rápido · Diseño elegante</span>
+      </header>
+
+      <div class="search-box">
+        <input id="search-input" type="search" placeholder="Buscar productos..." aria-label="Buscar productos" />
+      </div>
+
+      <div class="products" id="products"></div>
+      <div class="pagination" id="pagination"></div>
+    </section>
+
+    <aside class="panel">
+      <div class="cart-title">
+        <div>
+          <h2>Carrito</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem;">Productos agregados y resumen de compra.</p>
+        </div>
+      </div>
+
+      <div class="cart-summary">
+        <div>
+          <span class="total-label">Items</span>
+          <span id="cart-count">0</span>
+        </div>
+        <div>
+          <span class="total-label">Total</span>
+          <strong class="total-value" id="cart-total">$0.00</strong>
+        </div>
+      </div>
+
+      <div class="cart-items" id="cart-items">
+        <div class="empty-state" id="empty-state">Tu carrito está vacío. Agrega un producto para comenzar.</div>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    const products = [
+      {
+        id: 1,
+        name: 'Auriculares Wireless',
+        price: 59.99,
+        description: 'Sonido nítido, diseño ergonómico y batería de larga duración.',
+        image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 2,
+        name: 'Cafetera Compacta',
+        price: 79.95,
+        description: 'Prepara café de calidad desde casa con un toque contemporáneo.',
+        image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 3,
+        name: 'Lámpara LED',
+        price: 34.50,
+        description: 'Ilumina tu espacio con luz suave y control táctil moderno.',
+        image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 4,
+        name: 'Bolso Urbano',
+        price: 49.99,
+        description: 'Perfecto para el día a día con un estilo minimalista elegante.',
+        image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 5,
+        name: 'Kit de Crecimiento',
+        price: 29.90,
+        description: 'Incluye todo lo necesario para un jardín interior saludable.',
+        image: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 6,
+        name: 'Smartwatch Deportivo',
+        price: 89.99,
+        description: 'Rastrea tu ritmo, pasos y sueño con una interfaz clara.',
+        image: 'https://images.unsplash.com/photo-1517430816045-df4b7de11dff?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 7,
+        name: 'Mochila Minimalista',
+        price: 44.95,
+        description: 'Resistente al agua y con compartimentos organizados.',
+        image: 'https://images.unsplash.com/photo-1495107334309-fcf20504a5ab?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 8,
+        name: 'Altavoz Bluetooth',
+        price: 39.99,
+        description: 'Potente, portátil y con bajos profundos para cualquier fiesta.',
+        image: 'https://images.unsplash.com/photo-1516707570264-8a86b38e2f2b?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 9,
+        name: 'Set de Tazas',
+        price: 24.50,
+        description: 'Juego de cuatro tazas con acabado mate y moderno.',
+        image: 'https://images.unsplash.com/photo-1517685352821-92cf88aee5a5?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 10,
+        name: 'Tablet Liviana',
+        price: 199.00,
+        description: 'Pantalla cristalina y rendimiento suave para estudiar o ver series.',
+        image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 11,
+        name: 'Jardín de Suculentas',
+        price: 26.90,
+        description: 'Mini jardín listo para tu escritorio o mesa de café.',
+        image: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 12,
+        name: 'Agenda de Cuero',
+        price: 22.50,
+        description: 'Organiza tus días con estilo y páginas suaves al tacto.',
+        image: 'https://images.unsplash.com/photo-1518288774674-31e9c35f5b7b?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 13,
+        name: 'Set de Lentes',
+        price: 18.95,
+        description: 'Incluye estuche y paño suave para mantenerlos impecables.',
+        image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 14,
+        name: 'Reloj de Pared',
+        price: 29.99,
+        description: 'Diseño contemporáneo que añade carácter a cualquier pared.',
+        image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 15,
+        name: 'Cojín de Lectura',
+        price: 27.45,
+        description: 'Perfecto para leer con comodidad en el sofá o la cama.',
+        image: 'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 16,
+        name: 'Set de Plumas',
+        price: 16.90,
+        description: 'Elegante y profesional, ideal para tus notas diarias.',
+        image: 'https://images.unsplash.com/photo-1495214783159-3503fd1b572d?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 17,
+        name: 'Silla Gamer',
+        price: 139.99,
+        description: 'Cómoda, ergonómica y con soporte lumbar ajustable.',
+        image: 'https://images.unsplash.com/photo-1551808515-ee8a5b8dee2c?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 18,
+        name: 'Bolsa de Dormir',
+        price: 59.90,
+        description: 'Ligera y compacta para tus escapadas de fin de semana.',
+        image: 'https://images.unsplash.com/photo-1518733057094-95b5313f20fa?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 19,
+        name: 'Bata de Casa',
+        price: 34.90,
+        description: 'Suave, cómoda y perfecta para relajarte en casa.',
+        image: 'https://images.unsplash.com/photo-1528490060255-8f8a51c30055?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 20,
+        name: 'Cartera Slim',
+        price: 21.99,
+        description: 'Ajustada y funcional con compartimentos para tarjetas.',
+        image: 'https://images.unsplash.com/photo-1514996937319-344454492b37?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 21,
+        name: 'Set de Yoga',
+        price: 45.00,
+        description: 'Alfombra antideslizante y banda de resistencia incluidas.',
+        image: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 22,
+        name: 'Lente para Cámara',
+        price: 89.50,
+        description: 'Captura detalles nítidos con un diseño compacto y ligero.',
+        image: 'https://images.unsplash.com/photo-1491997345744-2d07f5646d7a?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 23,
+        name: 'Batería Portátil',
+        price: 34.49,
+        description: 'Carga rápida para tus dispositivos cuando más lo necesitas.',
+        image: 'https://images.unsplash.com/photo-1510557880182-3a935d0f0498?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 24,
+        name: 'Auriculares de Estudio',
+        price: 69.00,
+        description: 'Cancelación de ruido y ajuste cómodo para largas sesiones.',
+        image: 'https://images.unsplash.com/photo-1511376777868-611b54f68947?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 25,
+        name: 'Funda para Laptop',
+        price: 25.95,
+        description: 'Protección suave con estilo y cierre seguro.',
+        image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 26,
+        name: 'Jarra para Agua',
+        price: 19.90,
+        description: 'Cristal resistente con tapa anti-derrames.',
+        image: 'https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 27,
+        name: 'Almohada Ergonómica',
+        price: 33.75,
+        description: 'Soporte suave para descansar mejor cada noche.',
+        image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 28,
+        name: 'Set de Cocina',
+        price: 79.99,
+        description: 'Utensilios premium para cocinar con facilidad y estilo.',
+        image: 'https://images.unsplash.com/photo-1458642849426-cfb724f15ef7?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 29,
+        name: 'Bolígrafo Láser',
+        price: 12.99,
+        description: 'Ideal para presentaciones con diseño moderno y elegante.',
+        image: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=600&q=80'
+      },
+      {
+        id: 30,
+        name: 'Manta Térmica',
+        price: 39.60,
+        description: 'Calidez confortable para noches frías y relax total.',
+        image: 'https://images.unsplash.com/photo-1519974719765-e6559eac2575?auto=format&fit=crop&w=600&q=80'
+      }
+    ];
+
+    const cart = [];
+
+    const productsContainer = document.getElementById('products');
+    const paginationContainer = document.getElementById('pagination');
+    const searchInput = document.getElementById('search-input');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartTotalElement = document.getElementById('cart-total');
+    const cartCountElement = document.getElementById('cart-count');
+    const emptyState = document.getElementById('empty-state');
+
+    const itemsPerPage = 10;
+    let currentPage = 1;
+
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('es-ES', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2
+      }).format(value);
+    }
+
+    function getFilteredProducts() {
+      const query = searchInput.value.trim().toLowerCase();
+      if (!query) return products;
+      return products.filter(product =>
+        product.name.toLowerCase().includes(query) ||
+        product.description.toLowerCase().includes(query)
+      );
+    }
+
+    function getVisibleProducts() {
+      const filtered = getFilteredProducts();
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      return filtered.slice(startIndex, startIndex + itemsPerPage);
+    }
+
+    function renderPagination(totalItems) {
+      const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (totalPages === 1) {
+        paginationContainer.innerHTML = '';
+        return;
+      }
+
+      const pages = [];
+      for (let i = 1; i <= totalPages; i += 1) {
+        pages.push(`
+          <button type="button" class="page-button ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</button>
+        `);
+      }
+
+      paginationContainer.innerHTML = `
+        <button type="button" class="page-button" data-page="prev" ${currentPage === 1 ? 'disabled' : ''}>Anterior</button>
+        ${pages.join('')}
+        <button type="button" class="page-button" data-page="next" ${currentPage === totalPages ? 'disabled' : ''}>Siguiente</button>
+      `;
+    }
+
+    function renderProducts() {
+      const filteredProducts = getFilteredProducts();
+      const visibleProducts = getVisibleProducts();
+      const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      if (filteredProducts.length === 0) {
+        productsContainer.innerHTML = '<div class="empty-state">No se encontraron productos para la búsqueda.</div>';
+        paginationContainer.innerHTML = '';
+        return;
+      }
+
+      productsContainer.innerHTML = visibleProducts.map(product => `
+        <article class="product-card">
+          <img src="${product.image}" alt="${product.name}" loading="lazy" />
+          <div class="product-info">
+            <div>
+              <h2>${product.name}</h2>
+              <span>${formatCurrency(product.price)}</span>
+              <p>${product.description}</p>
+            </div>
+            <button type="button" data-id="${product.id}">Agregar</button>
+          </div>
+        </article>
+      `).join('');
+
+      renderPagination(filteredProducts.length);
+    }
+
+    function renderCart() {
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '';
+        emptyState.style.display = 'block';
+      } else {
+        emptyState.style.display = 'none';
+        cartItemsContainer.innerHTML = cart.map(item => `
+          <div class="cart-item">
+            <div class="cart-item-img">
+              <img src="${item.image}" alt="${item.name}" />
+            </div>
+            <div class="cart-item-detail">
+              <strong>${item.name}</strong>
+              <span>${item.quantity} × ${formatCurrency(item.price)}</span>
+            </div>
+            <div class="cart-item-actions">
+              <button type="button" data-action="remove" data-id="${item.id}">Quitar</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+      cartTotalElement.textContent = formatCurrency(total);
+      cartCountElement.textContent = count;
+    }
+
+    function addToCart(productId) {
+      const product = products.find(item => item.id === productId);
+      if (!product) return;
+
+      const cartItem = cart.find(item => item.id === productId);
+      if (cartItem) {
+        cartItem.quantity += 1;
+      } else {
+        cart.push({ ...product, quantity: 1 });
+      }
+      renderCart();
+    }
+
+    function removeFromCart(productId) {
+      const index = cart.findIndex(item => item.id === productId);
+      if (index === -1) return;
+
+      cart[index].quantity -= 1;
+      if (cart[index].quantity === 0) {
+        cart.splice(index, 1);
+      }
+      renderCart();
+    }
+
+    productsContainer.addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-id]');
+      if (!button) return;
+      const productId = Number(button.dataset.id);
+      addToCart(productId);
+    });
+
+    paginationContainer.addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-page]');
+      if (!button) return;
+      const page = button.dataset.page;
+      const filteredProducts = getFilteredProducts();
+      const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
+
+      if (page === 'prev' && currentPage > 1) {
+        currentPage -= 1;
+      } else if (page === 'next' && currentPage < totalPages) {
+        currentPage += 1;
+      } else if (!isNaN(page)) {
+        currentPage = Number(page);
+      }
+
+      renderProducts();
+    });
+
+    searchInput.addEventListener('input', () => {
+      currentPage = 1;
+      renderProducts();
+    });
+
+    cartItemsContainer.addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-action="remove"]');
+      if (!button) return;
+      const productId = Number(button.dataset.id);
+      removeFromCart(productId);
+    });
+
+    renderProducts();
+    renderCart();
+  </script>
+</body>
+</html>

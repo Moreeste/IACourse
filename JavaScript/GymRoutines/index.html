@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mis rutinas</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Planificador de entrenamiento</p>
+          <h1>Mis rutinas</h1>
+        </div>
+        <button id="newRoutineBtn" class="primary-btn">Nueva rutina</button>
+      </header>
+
+      <main>
+        <section id="weekGrid" class="week-grid" aria-label="Rutinas por día"></section>
+      </main>
+    </div>
+
+    <div id="routineModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2>Nueva rutina</h2>
+          <button id="closeModalBtn" class="icon-btn" type="button" aria-label="Cerrar">×</button>
+        </div>
+
+        <form id="routineForm" class="routine-form">
+          <label>
+            Nombre de la rutina
+            <input id="routineName" name="routineName" type="text" required />
+          </label>
+
+          <label>
+            Día de entrenamiento
+            <select id="routineDay" name="routineDay" required>
+              <option value="">Selecciona un día</option>
+              <option value="Lunes">Lunes</option>
+              <option value="Martes">Martes</option>
+              <option value="Miércoles">Miércoles</option>
+              <option value="Jueves">Jueves</option>
+              <option value="Viernes">Viernes</option>
+              <option value="Sábado">Sábado</option>
+              <option value="Domingo">Domingo</option>
+            </select>
+          </label>
+
+          <fieldset class="exercise-fieldset">
+            <legend>Agregar ejercicio</legend>
+
+            <label>
+              Ejercicio
+              <input id="exerciseName" name="exerciseName" type="text" required />
+            </label>
+
+            <label>
+              Series
+              <input id="exerciseSets" name="exerciseSets" type="number" min="1" required />
+            </label>
+
+            <label>
+              Repeticiones
+              <input id="exerciseReps" name="exerciseReps" type="text" required />
+            </label>
+
+            <label>
+              Descanso
+              <input id="exerciseRest" name="exerciseRest" type="text" required />
+            </label>
+
+            <button id="addExerciseBtn" class="secondary-btn" type="button">Agregar ejercicio</button>
+          </fieldset>
+
+          <div id="draftExercises" class="draft-exercises"></div>
+
+          <div class="modal-actions">
+            <button class="secondary-btn" type="button" id="cancelBtn">Cancelar</button>
+            <button class="primary-btn" type="submit">Guardar rutina</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

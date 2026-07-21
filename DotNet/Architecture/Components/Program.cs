@@ -21,5 +21,5 @@ void Save(ISave save)
     Console.WriteLine("Guardado realizado");
 }
 
-var jsonSave = new JsonSave("cervezas.json");
-Save(jsonSave);
+var xmlSave = new XMLSave("cervezas.xml");
+Save(xmlSave);
